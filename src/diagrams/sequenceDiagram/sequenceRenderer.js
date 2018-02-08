@@ -390,7 +390,7 @@ export const draw = function (text, id) {
       case parser.yy.LINETYPE.LOOP_END:
         loopData = bounds.endLoop()
 
-        svgDraw.drawLoop(diagram, loopData, 'loop', conf)
+        svgDraw.drawLoop(diagram, loopData, 'COAP State', conf)
         bounds.bumpVerticalPos(conf.boxMargin)
         break
       case parser.yy.LINETYPE.OPT_START:
