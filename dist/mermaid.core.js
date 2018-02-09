@@ -8361,7 +8361,7 @@ exports.default = {
 /* 23 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"mermaid","version":"7.1.3","description":"Markdownish syntax for generating flowcharts, sequence diagrams, class diagrams, gantt charts and git graphs.","main":"dist/mermaid.core.js","keywords":["diagram","markdown","flowchart","sequence diagram","gantt","class diagram","git graph"],"scripts":{"build":"webpack --progress --colors","build:watch":"yarn build --watch","release":"yarn build -p --config webpack.config.prod.babel.js","upgrade":"yarn-upgrade-all && yarn remove d3 && yarn add d3@3.5.17","lint":"standard","karma":"node -r babel-register node_modules/.bin/karma start karma.conf.js --single-run","test":"yarn lint && yarn karma","jison":"node -r babel-register node_modules/.bin/gulp jison","prepublishOnly":"yarn build && yarn release && yarn test"},"repository":{"type":"git","url":"https://github.com/knsv/mermaid"},"author":"Knut Sveidqvist","license":"MIT","standard":{"ignore":["**/parser/*.js","dist/**/*.js"]},"dependencies":{"d3":"3.5.17","dagre-d3-renderer":"^0.4.25","dagre-layout":"^0.8.0","he":"^1.1.1","lodash":"^4.17.4","moment":"^2.20.1"},"devDependencies":{"babel-core":"^6.26.0","babel-loader":"^7.1.2","babel-plugin-lodash":"^3.3.2","babel-preset-env":"^1.6.1","codeclimate-test-reporter":"^0.5.0","css-loader":"^0.28.7","css-to-string-loader":"^0.1.3","extract-text-webpack-plugin":"^3.0.2","gulp":"^3.9.1","gulp-filelog":"^0.4.1","gulp-jison":"^1.2.0","inject-loader":"^3.0.1","jasmine":"^2.8.0","jasmine-es6":"^0.4.3","jison":"^0.4.18","karma":"^1.7.1","karma-chrome-launcher":"^2.2.0","karma-jasmine":"^1.1.1","karma-sourcemap-loader":"^0.3.7","karma-webpack":"^2.0.9","less":"^2.7.3","less-loader":"^4.0.5","puppeteer":"^0.13.0","standard":"^10.0.3","style-loader":"^0.19.1","webpack":"^3.10.0","webpack-node-externals":"^1.6.0","yarn-upgrade-all":"^0.2.0"},"files":["dist","src"]}
+module.exports = {"name":"mermaid","version":"7.1.3","description":"Markdownish syntax for generating flowcharts, sequence diagrams, class diagrams, gantt charts and git graphs.","main":"dist/mermaid.core.js","keywords":["diagram","markdown","flowchart","sequence diagram","gantt","class diagram","git graph"],"scripts":{"build":"webpack --progress --colors","build:watch":"yarn build --watch","release":"yarn build -p --config webpack.config.prod.babel.js","upgrade":"yarn-upgrade-all && yarn remove d3 && yarn add d3@3.5.17","lint":"standard","karma":"node -r babel-register node_modules/.bin/karma start karma.conf.js --single-run","test":"yarn lint && yarn karma","jison":"node -r babel-register node_modules/.bin/gulp jison","prepublishOnly":"yarn build && yarn release && yarn test"},"repository":{"type":"git","url":"https://github.com/tbrandsma-rw/mermaid"},"author":"Knut Sveidqvist","license":"MIT","standard":{"ignore":["**/parser/*.js","dist/**/*.js"]},"dependencies":{"d3":"3.5.17","dagre-d3-renderer":"^0.4.25","dagre-layout":"^0.8.0","he":"^1.1.1","lodash":"^4.17.4","moment":"^2.20.1"},"devDependencies":{"babel-core":"^6.26.0","babel-loader":"^7.1.2","babel-plugin-lodash":"^3.3.2","babel-preset-env":"^1.6.1","codeclimate-test-reporter":"^0.5.0","css-loader":"^0.28.7","css-to-string-loader":"^0.1.3","extract-text-webpack-plugin":"^3.0.2","gulp":"^3.9.1","gulp-filelog":"^0.4.1","gulp-jison":"^1.2.0","inject-loader":"^3.0.1","jasmine":"^2.8.0","jasmine-es6":"^0.4.3","jison":"^0.4.18","karma":"^1.7.1","karma-chrome-launcher":"^2.2.0","karma-jasmine":"^1.1.1","karma-sourcemap-loader":"^0.3.7","karma-webpack":"^2.0.9","less":"^2.7.3","less-loader":"^4.0.5","puppeteer":"^0.13.0","standard":"^10.0.3","style-loader":"^0.19.1","webpack":"^3.10.0","webpack-node-externals":"^1.6.0","yarn-upgrade-all":"^0.2.0"},"files":["dist","src"]}
 
 /***/ }),
 /* 24 */
@@ -9964,20 +9964,22 @@ var drawMessage = function drawMessage(elem, startx, stopx, verticalPos, msg) {
   }
 
   var line = void 0;
-  if (startx === stopx) {
-    line = g.append('path').attr('d', 'M ' + startx + ',' + verticalPos + ' C ' + (startx + 60) + ',' + (verticalPos - 10) + ' ' + (startx + 60) + ',' + (verticalPos + 30) + ' ' + startx + ',' + (verticalPos + 20));
+  //if (startx === stopx) {
+  //line = g.append('path')
+  //  .attr('d', 'M ' + startx + ',' + verticalPos + ' C ' + (startx + 60) + ',' + (verticalPos - 10) + ' ' + (startx + 60) + ',' +
+  //  (verticalPos + 30) + ' ' + startx + ',' + (verticalPos + 20))
 
-    bounds.bumpVerticalPos(30);
-    var dx = Math.max(textWidth / 2, 100);
-    bounds.insert(startx - dx, bounds.getVerticalPos() - 10, stopx + dx, bounds.getVerticalPos());
-  } else {
-    line = g.append('line');
-    line.attr('x1', startx);
-    line.attr('y1', verticalPos);
-    line.attr('x2', stopx);
-    line.attr('y2', verticalPos);
-    bounds.insert(startx, bounds.getVerticalPos() - 10, stopx, bounds.getVerticalPos());
-  }
+  //bounds.bumpVerticalPos(30)
+  //const dx = Math.max(textWidth / 2, 100)
+  //bounds.insert(startx - dx, bounds.getVerticalPos() - 10, stopx + dx, bounds.getVerticalPos())
+  //} else {
+  line = g.append('line');
+  line.attr('x1', startx);
+  line.attr('y1', verticalPos);
+  line.attr('x2', stopx);
+  line.attr('y2', verticalPos);
+  bounds.insert(startx, bounds.getVerticalPos() - 10, stopx, bounds.getVerticalPos());
+  //}
   // Make an SVG Container
   // Draw the line
   if (msg.type === _sequenceDiagram.parser.yy.LINETYPE.DOTTED || msg.type === _sequenceDiagram.parser.yy.LINETYPE.DOTTED_CROSS || msg.type === _sequenceDiagram.parser.yy.LINETYPE.DOTTED_OPEN) {

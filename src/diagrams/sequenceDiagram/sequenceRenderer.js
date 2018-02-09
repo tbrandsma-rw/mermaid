@@ -224,22 +224,22 @@ const drawMessage = function (elem, startx, stopx, verticalPos, msg) {
   }
 
   let line
-  if (startx === stopx) {
-    line = g.append('path')
-      .attr('d', 'M ' + startx + ',' + verticalPos + ' C ' + (startx + 60) + ',' + (verticalPos - 10) + ' ' + (startx + 60) + ',' +
-      (verticalPos + 30) + ' ' + startx + ',' + (verticalPos + 20))
+  //if (startx === stopx) {
+    //line = g.append('path')
+    //  .attr('d', 'M ' + startx + ',' + verticalPos + ' C ' + (startx + 60) + ',' + (verticalPos - 10) + ' ' + (startx + 60) + ',' +
+    //  (verticalPos + 30) + ' ' + startx + ',' + (verticalPos + 20))
 
-    bounds.bumpVerticalPos(30)
-    const dx = Math.max(textWidth / 2, 100)
-    bounds.insert(startx - dx, bounds.getVerticalPos() - 10, stopx + dx, bounds.getVerticalPos())
-  } else {
+    //bounds.bumpVerticalPos(30)
+    //const dx = Math.max(textWidth / 2, 100)
+    //bounds.insert(startx - dx, bounds.getVerticalPos() - 10, stopx + dx, bounds.getVerticalPos())
+  //} else {
     line = g.append('line')
     line.attr('x1', startx)
     line.attr('y1', verticalPos)
     line.attr('x2', stopx)
     line.attr('y2', verticalPos)
     bounds.insert(startx, bounds.getVerticalPos() - 10, stopx, bounds.getVerticalPos())
-  }
+  //}
   // Make an SVG Container
   // Draw the line
   if (msg.type === parser.yy.LINETYPE.DOTTED || msg.type === parser.yy.LINETYPE.DOTTED_CROSS || msg.type === parser.yy.LINETYPE.DOTTED_OPEN) {
