@@ -54,7 +54,7 @@ export const drawLabel = function (elem, txtObject) {
       (x) + ',' + (y + height)
   }
   const polygon = elem.append('polygon')
-  polygon.attr('points', genPoints(txtObject.x, txtObject.y, 50, 20, 7))
+  polygon.attr('points', genPoints(txtObject.x, txtObject.y, 100, 20, 7))
   polygon.attr('class', 'labelBox')
 
   txtObject.y = txtObject.y + txtObject.labelMargin
@@ -155,7 +155,7 @@ export const drawLoop = function (elem, bounds, labelText, conf) {
   drawLabel(g, txt)
 
   txt = getTextObj()
-  txt.text = '[ ' + bounds.title + ' ]'
+  txt.text = '' + bounds.title + ''
   txt.x = bounds.startx + (bounds.stopx - bounds.startx) / 2
   txt.y = bounds.starty + 1.5 * conf.boxMargin
   txt.anchor = 'middle'
@@ -198,16 +198,18 @@ export const insertArrowCrossHead = function (elem) {
     .attr('markerWidth', 15)
     .attr('markerHeight', 8)
     .attr('orient', 'auto')
-    .attr('refX', 16)
+    .attr('refX', 3)
     .attr('refY', 4)
+    //.attr('refX', 16)
+    //.attr('refY', 4)
 
   // The arrow
-  marker.append('path')
-    .attr('fill', 'black')
-    .attr('stroke', '#000000')
-    .style('stroke-dasharray', ('0, 0'))
-    .attr('stroke-width', '1px')
-    .attr('d', 'M 9,2 V 6 L16,4 Z')
+  //marker.append('path')
+  //  .attr('fill', 'black')
+  //  .attr('stroke', '#000000')
+  //  .style('stroke-dasharray', ('0, 0'))
+  //  .attr('stroke-width', '1px')
+  //  .attr('d', 'M 9,2 V 6 L16,4 Z')
 
   // The cross
   marker.append('path')

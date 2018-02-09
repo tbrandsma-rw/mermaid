@@ -22,9 +22,15 @@ click B testClick "click test"
 
   <div class="mermaid">
 sequenceDiagram
-loop every day
-    Alice->>John: Hello John, how are you?
-    John-->>Alice: Great!
+participant Bill
+participant Alice
+participant John
+participant Ted
+participant Greg
+loop 
+    Alice--xJohn: Hello John, how are you?
+    John--xAlice: Great!
+    Note right of Greg: Test
 end
   </div>
 
