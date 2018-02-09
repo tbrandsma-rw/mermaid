@@ -399,7 +399,7 @@ module.exports.draw = function (text, id) {
       case sq.yy.LINETYPE.LOOP_END:
         loopData = exports.bounds.endLoop()
 
-        svgDraw.drawLoop(diagram, loopData, 'loop', conf)
+        svgDraw.drawLoop(diagram, loopData, 'COAP State', conf)
         exports.bounds.bumpVerticalPos(conf.boxMargin)
         break
       case sq.yy.LINETYPE.OPT_START:
