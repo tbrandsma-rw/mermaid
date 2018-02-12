@@ -372,12 +372,12 @@ export const draw = function (text, id) {
         stopx = actors[msg.to].x
 
         if (msg.placement === parser.yy.PLACEMENT.RIGHTOF) {
-          drawNote(diagram, startx + (conf.width + conf.actorMargin) / 2, bounds.getVerticalPos(), msg)
+          drawNote(diagram, startx + (conf.width + conf.actorMargin) / 2, bounds.getVerticalPos() - conf.messageMargin, msg)
         } else if (msg.placement === parser.yy.PLACEMENT.LEFTOF) {
-          drawNote(diagram, startx - (conf.width + conf.actorMargin) / 2, bounds.getVerticalPos(), msg)
+          drawNote(diagram, startx - (conf.width + conf.actorMargin) / 2, bounds.getVerticalPos() - conf.messageMargin, msg)
         } else if (msg.to === msg.from) {
           // Single-actor over
-          drawNote(diagram, startx, bounds.getVerticalPos(), msg)
+          drawNote(diagram, startx, bounds.getVerticalPos() - conf.messageMargin, msg)
         } else {
           // Multi-actor over
           forceWidth = Math.abs(startx - stopx) + conf.actorMargin

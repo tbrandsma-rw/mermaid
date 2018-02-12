@@ -10116,12 +10116,12 @@ var draw = exports.draw = function draw(text, id) {
         stopx = actors[msg.to].x;
 
         if (msg.placement === _sequenceDiagram.parser.yy.PLACEMENT.RIGHTOF) {
-          drawNote(diagram, startx + (conf.width + conf.actorMargin) / 2, bounds.getVerticalPos(), msg);
+          drawNote(diagram, startx + (conf.width + conf.actorMargin) / 2, bounds.getVerticalPos() - conf.messageMargin, msg);
         } else if (msg.placement === _sequenceDiagram.parser.yy.PLACEMENT.LEFTOF) {
-          drawNote(diagram, startx - (conf.width + conf.actorMargin) / 2, bounds.getVerticalPos(), msg);
+          drawNote(diagram, startx - (conf.width + conf.actorMargin) / 2, bounds.getVerticalPos() - conf.messageMargin, msg);
         } else if (msg.to === msg.from) {
           // Single-actor over
-          drawNote(diagram, startx, bounds.getVerticalPos(), msg);
+          drawNote(diagram, startx, bounds.getVerticalPos() - conf.messageMargin, msg);
         } else {
           // Multi-actor over
           forceWidth = Math.abs(startx - stopx) + conf.actorMargin;
