@@ -22,17 +22,290 @@ click B testClick "click test"
 
   <div class="mermaid">
 sequenceDiagram
-participant Bill
-participant Alice
-participant John
-participant Ted
-participant Greg
-loop 
-    Alice--xJohn: Hello John, how are you?
-    John--xAlice: Great!
-    John--xJohn: Great!
-    Note right of Greg: Test
-end
+    participant 0 as coap:4d95eedf@ZjEs4GmsZoJfiunHZvjP8gisw.nocell.io
+    participant 1 as igate-qa-aws01
+    participant 2 as isw-core-beta-qa-aws02
+    participant 3 as tel:+19842041650
+    participant 4 as tel:none
+    participant 5 as tel:+19197713748
+    1--x1:changed
+    Note right of 5: 15:12:21.090
+    1->>0:changed
+    Note right of 5: 15:12:21.090
+    2->>1:changed
+    Note right of 5: 15:12:25.937
+    loop
+        3--x3:alerting
+    end
+    1->>0:changed
+    Note right of 5: 15:12:25.937
+    loop
+        3--x3:alerting
+    end
+    2->>1:changed
+    Note right of 5: 15:12:25.972
+    loop
+        3--x3:alerting
+    end
+    1->>0:changed
+    Note right of 5: 15:12:25.973
+    loop
+        3--x3:alerting
+    end
+    2->>1:changed
+    Note right of 5: 15:12:26.002
+    1->>0:changed
+    Note right of 5: 15:12:26.002
+    loop
+        3--x3:alerting
+    end
+    2->>1:changed
+    Note right of 5: 15:12:26.049
+    1->>0:changed
+    Note right of 5: 15:12:26.049
+    loop
+        4--x4:failed
+        3--x3:alerting
+    end
+    2->>1:changed
+    Note right of 5: 15:12:26.078
+    1->>0:changed
+    Note right of 5: 15:12:26.078
+    loop
+        4--x4:failed
+        3--x3:alerting
+    end
+    2->>1:changed
+    Note right of 5: 15:12:26.102
+    1->>0:changed
+    Note right of 5: 15:12:26.102
+    loop
+        4--x4:failed
+        3--x3:alerting
+    end
+    2->>1:changed
+    Note right of 5: 15:12:29.893
+    1->>0:changed
+    Note right of 5: 15:12:29.893
+    loop
+        4--x4:failed
+        5--x5:progressing
+        3--x3:alerting
+    end
+    2->>1:changed
+    Note right of 5: 15:12:29.934
+    1->>0:changed
+    Note right of 5: 15:12:29.934
+    loop
+        4--x4:failed
+        5--x5:progressing
+        3--x3:alerting
+    end
+    2->>1:changed
+    Note right of 5: 15:12:30.156
+    1->>0:changed
+    Note right of 5: 15:12:30.156
+    loop
+        4--x4:failed
+        5--x5:progressing
+        3--x3:alerting
+    end
+    0->>1:post
+    Note right of 5: 15:12:31.158
+    0->>1:post
+    Note right of 5: 15:12:31.169
+    1->>2:post
+    Note right of 5: 15:12:31.169
+    2->>1:content
+    Note right of 5: 15:12:31.214
+    1->>0:content
+    Note right of 5: 15:12:31.214
+    2->>1:changed
+    Note right of 5: 15:12:31.247
+    1->>0:changed
+    Note right of 5: 15:12:31.247
+    loop
+        4--x4:failed
+        5--x5:progressing
+        0--x0:connected
+        3--x3:alerting
+    end
+    2->>1:changed
+    Note right of 5: 15:12:31.293
+    1->>0:changed
+    Note right of 5: 15:12:31.293
+    loop
+        4--x4:failed
+        5--x5:failed
+        0--x0:connected
+        3--x3:alerting
+    end
+    2->>1:changed
+    Note right of 5: 15:12:31.355
+    1->>0:changed
+    Note right of 5: 15:12:31.355
+    loop
+        4--x4:failed
+        5--x5:failed
+        0--x0:connected
+        3--x3:connected
+    end
+    2->>1:changed
+    Note right of 5: 15:12:31.401
+    1->>0:changed
+    Note right of 5: 15:12:31.401
+    loop
+        4--x4:failed
+        5--x5:failed
+        0--x0:connected
+        3--x3:connected
+    end
+    2->>1:changed
+    Note right of 5: 15:12:31.676
+    1->>0:changed
+    Note right of 5: 15:12:31.676
+    loop
+        4--x4:failed
+        5--x5:progressing
+        0--x0:connected
+        3--x3:alerting
+    end
+    2->>1:changed
+    Note right of 5: 15:12:31.724
+    1->>0:changed
+    Note right of 5: 15:12:31.724
+    loop
+        4--x4:failed
+        5--x5:failed
+        0--x0:connected
+        3--x3:alerting
+    end
+    2->>1:changed
+    Note right of 5: 15:12:31.834
+    1->>0:changed
+    Note right of 5: 15:12:31.834
+    loop
+        4--x4:failed
+        5--x5:failed
+        0--x0:connected
+        3--x3:connected
+    end
+    2->>1:changed
+    Note right of 5: 15:12:31.841
+    1->>0:changed
+    Note right of 5: 15:12:31.841
+    loop
+        4--x4:failed
+        5--x5:failed
+        0--x0:connected
+        3--x3:connected
+    end
+    0->>1:post
+    Note right of 5: 15:12:32.486
+    2->>1:changed
+    Note right of 5: 15:12:32.533
+    1->>0:changed
+    Note right of 5: 15:12:32.533
+    loop
+        4--x4:failed
+        5--x5:progressing
+        0--x0:connected
+        3--x3:alerting
+    end
+    2->>1:changed
+    Note right of 5: 15:12:32.587
+    1->>0:changed
+    Note right of 5: 15:12:32.587
+    loop
+        4--x4:failed
+        5--x5:failed
+        0--x0:connected
+        3--x3:alerting
+    end
+    0->>1:post
+    Note right of 5: 15:12:32.636
+    2->>1:changed
+    Note right of 5: 15:12:32.722
+    1->>0:changed
+    Note right of 5: 15:12:32.722
+    loop
+        4--x4:failed
+        5--x5:failed
+        0--x0:connected
+        3--x3:connected
+    end
+    2->>1:changed
+    Note right of 5: 15:12:32.793
+    1->>0:changed
+    Note right of 5: 15:12:32.793
+    loop
+        4--x4:failed
+        5--x5:failed
+        0--x0:connected
+        3--x3:connected
+    end
+    0->>1:delete
+    Note right of 5: 15:12:42.449
+    0->>1:delete
+    Note right of 5: 15:12:42.464
+    1->>2:delete
+    Note right of 5: 15:12:42.464
+    2->>1:deleted
+    Note right of 5: 15:12:42.487
+    1->>0:deleted
+    Note right of 5: 15:12:42.487
+    2->>1:changed
+    Note right of 5: 15:12:42.512
+    1->>0:changed
+    Note right of 5: 15:12:42.512
+    loop
+        4--x4:failed
+        5--x5:failed
+        0--x0:disconnected
+        3--x3:connected
+    end
+    2->>1:changed
+    Note right of 5: 15:12:42.556
+    1->>0:changed
+    Note right of 5: 15:12:42.556
+    loop
+        4--x4:failed
+        5--x5:failed
+        0--x0:disconnected
+        3--x3:connected
+    end
+    2->>1:changed
+    Note right of 5: 15:12:42.615
+    1->>0:changed
+    Note right of 5: 15:12:42.615
+    loop
+        4--x4:failed
+        5--x5:failed
+        0--x0:disconnected
+        3--x3:disconnected
+    end
+    0->>1:delete
+    Note right of 5: 15:12:42.627
+    2->>1:changed
+    Note right of 5: 15:12:42.665
+    1->>0:changed
+    Note right of 5: 15:12:42.665
+    loop
+        4--x4:failed
+        5--x5:failed
+        0--x0:disconnected
+        3--x3:disconnected
+    end
+    2->>1:changed
+    Note right of 5: 15:12:42.756
+    1->>0:changed
+    Note right of 5: 15:12:42.756
+    0->>1:delete
+    Note right of 5: 15:12:42.823
+    0->>1:delete
+    Note right of 5: 15:12:42.826
+    0->>1:delete
+    Note right of 5: 15:12:42.838
   </div>
 
   <hr/>

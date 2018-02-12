@@ -127,7 +127,10 @@ export const bounds = {
     return activation
   },
   newLoop: function (title) {
-    this.sequenceItems.push({ startx: undefined, starty: this.verticalPos, stopx: undefined, stopy: undefined, title: title })
+    const actors = parser.yy.getActors()
+    const actorKeys = parser.yy.getActorKeys()
+    console.log(actors[actorKeys[actorKeys.length - 1]].x)
+    this.sequenceItems.push({ startx: 0, starty: this.verticalPos, stopx: actors[actorKeys[actorKeys.length - 1]].x + conf.width, stopy: undefined, title: title })
   },
   endLoop: function () {
     const loop = this.sequenceItems.pop()
@@ -224,22 +227,27 @@ const drawMessage = function (elem, startx, stopx, verticalPos, msg) {
   }
 
   let line
-  //if (startx === stopx) {
+  if (startx === stopx) {
     //line = g.append('path')
     //  .attr('d', 'M ' + startx + ',' + verticalPos + ' C ' + (startx + 60) + ',' + (verticalPos - 10) + ' ' + (startx + 60) + ',' +
     //  (verticalPos + 30) + ' ' + startx + ',' + (verticalPos + 20))
 
-    //bounds.bumpVerticalPos(30)
+    line = g.append('line')
+    line.attr('x1', startx)
+    line.attr('y1', verticalPos)
+    line.attr('x2', stopx)
+    line.attr('y2', verticalPos)
+    //bounds.bumpVerticalPos(20)
     //const dx = Math.max(textWidth / 2, 100)
-    //bounds.insert(startx - dx, bounds.getVerticalPos() - 10, stopx + dx, bounds.getVerticalPos())
-  //} else {
+    //bounds.insert(startx, bounds.getVerticalPos() - 10, stopx, bounds.getVerticalPos())
+  } else {
     line = g.append('line')
     line.attr('x1', startx)
     line.attr('y1', verticalPos)
     line.attr('x2', stopx)
     line.attr('y2', verticalPos)
     bounds.insert(startx, bounds.getVerticalPos() - 10, stopx, bounds.getVerticalPos())
-  //}
+  }
   // Make an SVG Container
   // Draw the line
   if (msg.type === parser.yy.LINETYPE.DOTTED || msg.type === parser.yy.LINETYPE.DOTTED_CROSS || msg.type === parser.yy.LINETYPE.DOTTED_OPEN) {
@@ -352,6 +360,7 @@ export const draw = function (text, id) {
 
   // const lastMsg
 
+  let inLoop = false
   // Draw the messages/signals
   messages.forEach(function (msg) {
     let loopData
@@ -386,10 +395,14 @@ export const draw = function (text, id) {
         bounds.bumpVerticalPos(conf.boxMargin)
         bounds.newLoop(msg.message)
         bounds.bumpVerticalPos(conf.boxMargin + conf.boxTextMargin)
+        bounds.bumpVerticalPos(15)
+        inLoop = true
         break
       case parser.yy.LINETYPE.LOOP_END:
         loopData = bounds.endLoop()
+        inLoop = false
 
+        console.log(loopData)
         svgDraw.drawLoop(diagram, loopData, 'COAP State', conf)
         bounds.bumpVerticalPos(conf.boxMargin)
         break
@@ -438,7 +451,9 @@ export const draw = function (text, id) {
       default:
         try {
           // lastMsg = msg
-          bounds.bumpVerticalPos(conf.messageMargin)
+          if (!inLoop) {
+              bounds.bumpVerticalPos(conf.messageMargin)
+          }
           const fromBounds = actorFlowVerticaBounds(msg.from)
           const toBounds = actorFlowVerticaBounds(msg.to)
           const fromIdx = fromBounds[0] <= toBounds[0] ? 1 : 0

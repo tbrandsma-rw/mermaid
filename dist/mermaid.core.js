@@ -9872,7 +9872,10 @@ var bounds = exports.bounds = {
     return activation;
   },
   newLoop: function newLoop(title) {
-    this.sequenceItems.push({ startx: undefined, starty: this.verticalPos, stopx: undefined, stopy: undefined, title: title });
+    var actors = _sequenceDiagram.parser.yy.getActors();
+    var actorKeys = _sequenceDiagram.parser.yy.getActorKeys();
+    console.log(actors[actorKeys[actorKeys.length - 1]].x);
+    this.sequenceItems.push({ startx: 0, starty: this.verticalPos, stopx: actors[actorKeys[actorKeys.length - 1]].x + conf.width, stopy: undefined, title: title });
   },
   endLoop: function endLoop() {
     var loop = this.sequenceItems.pop();
@@ -9964,22 +9967,27 @@ var drawMessage = function drawMessage(elem, startx, stopx, verticalPos, msg) {
   }
 
   var line = void 0;
-  //if (startx === stopx) {
-  //line = g.append('path')
-  //  .attr('d', 'M ' + startx + ',' + verticalPos + ' C ' + (startx + 60) + ',' + (verticalPos - 10) + ' ' + (startx + 60) + ',' +
-  //  (verticalPos + 30) + ' ' + startx + ',' + (verticalPos + 20))
+  if (startx === stopx) {
+    //line = g.append('path')
+    //  .attr('d', 'M ' + startx + ',' + verticalPos + ' C ' + (startx + 60) + ',' + (verticalPos - 10) + ' ' + (startx + 60) + ',' +
+    //  (verticalPos + 30) + ' ' + startx + ',' + (verticalPos + 20))
 
-  //bounds.bumpVerticalPos(30)
-  //const dx = Math.max(textWidth / 2, 100)
-  //bounds.insert(startx - dx, bounds.getVerticalPos() - 10, stopx + dx, bounds.getVerticalPos())
-  //} else {
-  line = g.append('line');
-  line.attr('x1', startx);
-  line.attr('y1', verticalPos);
-  line.attr('x2', stopx);
-  line.attr('y2', verticalPos);
-  bounds.insert(startx, bounds.getVerticalPos() - 10, stopx, bounds.getVerticalPos());
-  //}
+    line = g.append('line');
+    line.attr('x1', startx);
+    line.attr('y1', verticalPos);
+    line.attr('x2', stopx);
+    line.attr('y2', verticalPos);
+    //bounds.bumpVerticalPos(20)
+    //const dx = Math.max(textWidth / 2, 100)
+    //bounds.insert(startx, bounds.getVerticalPos() - 10, stopx, bounds.getVerticalPos())
+  } else {
+    line = g.append('line');
+    line.attr('x1', startx);
+    line.attr('y1', verticalPos);
+    line.attr('x2', stopx);
+    line.attr('y2', verticalPos);
+    bounds.insert(startx, bounds.getVerticalPos() - 10, stopx, bounds.getVerticalPos());
+  }
   // Make an SVG Container
   // Draw the line
   if (msg.type === _sequenceDiagram.parser.yy.LINETYPE.DOTTED || msg.type === _sequenceDiagram.parser.yy.LINETYPE.DOTTED_CROSS || msg.type === _sequenceDiagram.parser.yy.LINETYPE.DOTTED_OPEN) {
@@ -10096,6 +10104,7 @@ var draw = exports.draw = function draw(text, id) {
 
   // const lastMsg
 
+  var inLoop = false;
   // Draw the messages/signals
   messages.forEach(function (msg) {
     var loopData = void 0;
@@ -10129,10 +10138,14 @@ var draw = exports.draw = function draw(text, id) {
         bounds.bumpVerticalPos(conf.boxMargin);
         bounds.newLoop(msg.message);
         bounds.bumpVerticalPos(conf.boxMargin + conf.boxTextMargin);
+        bounds.bumpVerticalPos(15);
+        inLoop = true;
         break;
       case _sequenceDiagram.parser.yy.LINETYPE.LOOP_END:
         loopData = bounds.endLoop();
+        inLoop = false;
 
+        console.log(loopData);
         _svgDraw2.default.drawLoop(diagram, loopData, 'COAP State', conf);
         bounds.bumpVerticalPos(conf.boxMargin);
         break;
@@ -10181,7 +10194,9 @@ var draw = exports.draw = function draw(text, id) {
       default:
         try {
           // lastMsg = msg
-          bounds.bumpVerticalPos(conf.messageMargin);
+          if (!inLoop) {
+            bounds.bumpVerticalPos(conf.messageMargin);
+          }
           var fromBounds = actorFlowVerticaBounds(msg.from);
           var toBounds = actorFlowVerticaBounds(msg.to);
           var fromIdx = fromBounds[0] <= toBounds[0] ? 1 : 0;
@@ -10372,9 +10387,9 @@ var drawLoop = exports.drawLoop = function drawLoop(elem, bounds, labelText, con
     return g.append('line').attr('x1', startx).attr('y1', starty).attr('x2', stopx).attr('y2', stopy).attr('class', 'loopLine');
   };
   drawLoopLine(bounds.startx, bounds.starty, bounds.stopx, bounds.starty);
-  drawLoopLine(bounds.stopx, bounds.starty, bounds.stopx, bounds.stopy);
-  drawLoopLine(bounds.startx, bounds.stopy, bounds.stopx, bounds.stopy);
-  drawLoopLine(bounds.startx, bounds.starty, bounds.startx, bounds.stopy);
+  drawLoopLine(bounds.stopx, bounds.starty, bounds.stopx, bounds.stopy + 10);
+  drawLoopLine(bounds.startx, bounds.stopy + 10, bounds.stopx, bounds.stopy + 10);
+  drawLoopLine(bounds.startx, bounds.starty, bounds.startx, bounds.stopy + 10);
   if (typeof bounds.sections !== 'undefined') {
     bounds.sections.forEach(function (item) {
       drawLoopLine(bounds.startx, item, bounds.stopx, item).style('stroke-dasharray', '3, 3');

@@ -136,9 +136,9 @@ export const drawLoop = function (elem, bounds, labelText, conf) {
       .attr('class', 'loopLine')
   }
   drawLoopLine(bounds.startx, bounds.starty, bounds.stopx, bounds.starty)
-  drawLoopLine(bounds.stopx, bounds.starty, bounds.stopx, bounds.stopy)
-  drawLoopLine(bounds.startx, bounds.stopy, bounds.stopx, bounds.stopy)
-  drawLoopLine(bounds.startx, bounds.starty, bounds.startx, bounds.stopy)
+  drawLoopLine(bounds.stopx, bounds.starty, bounds.stopx, bounds.stopy + 10)
+  drawLoopLine(bounds.startx, bounds.stopy + 10, bounds.stopx, bounds.stopy + 10)
+  drawLoopLine(bounds.startx, bounds.starty, bounds.startx, bounds.stopy + 10)
   if (typeof bounds.sections !== 'undefined') {
     bounds.sections.forEach(function (item) {
       drawLoopLine(bounds.startx, item, bounds.stopx, item).style('stroke-dasharray', '3, 3')
