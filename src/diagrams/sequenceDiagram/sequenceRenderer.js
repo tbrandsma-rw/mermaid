@@ -129,7 +129,6 @@ export const bounds = {
   newLoop: function (title) {
     const actors = parser.yy.getActors()
     const actorKeys = parser.yy.getActorKeys()
-    console.log(actors[actorKeys[actorKeys.length - 1]].x)
     this.sequenceItems.push({ startx: 0, starty: this.verticalPos, stopx: actors[actorKeys[actorKeys.length - 1]].x + conf.width, stopy: undefined, title: title })
   },
   endLoop: function () {
@@ -196,7 +195,9 @@ const drawNote = function (elem, startx, verticalPos, msg, forceWidth) {
   }
 
   rectElem.attr('height', textHeight + 2 * conf.noteMargin)
-  bounds.bumpVerticalPos(textHeight + 2 * conf.noteMargin)
+  console.log(textHeight + 2 * conf.noteMargin)
+  bounds.bumpVerticalPos(5)
+  //bounds.bumpVerticalPos(textHeight + 2 * conf.noteMargin)
 }
 
 /**
@@ -366,7 +367,7 @@ export const draw = function (text, id) {
     let loopData
     switch (msg.type) {
       case parser.yy.LINETYPE.NOTE:
-        bounds.bumpVerticalPos(conf.boxMargin)
+        //bounds.bumpVerticalPos(conf.boxMargin)
 
         startx = actors[msg.from].x
         stopx = actors[msg.to].x
@@ -402,9 +403,8 @@ export const draw = function (text, id) {
         loopData = bounds.endLoop()
         inLoop = false
 
-        console.log(loopData)
         svgDraw.drawLoop(diagram, loopData, 'COAP State', conf)
-        bounds.bumpVerticalPos(conf.boxMargin)
+        bounds.bumpVerticalPos(conf.boxMargin + 10)
         break
       case parser.yy.LINETYPE.OPT_START:
         bounds.bumpVerticalPos(conf.boxMargin)

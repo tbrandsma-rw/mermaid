@@ -9874,7 +9874,6 @@ var bounds = exports.bounds = {
   newLoop: function newLoop(title) {
     var actors = _sequenceDiagram.parser.yy.getActors();
     var actorKeys = _sequenceDiagram.parser.yy.getActorKeys();
-    console.log(actors[actorKeys[actorKeys.length - 1]].x);
     this.sequenceItems.push({ startx: 0, starty: this.verticalPos, stopx: actors[actorKeys[actorKeys.length - 1]].x + conf.width, stopy: undefined, title: title });
   },
   endLoop: function endLoop() {
@@ -9940,7 +9939,9 @@ var bounds = exports.bounds = {
   }
 
   rectElem.attr('height', textHeight + 2 * conf.noteMargin);
-  bounds.bumpVerticalPos(textHeight + 2 * conf.noteMargin);
+  console.log(textHeight + 2 * conf.noteMargin);
+  bounds.bumpVerticalPos(5);
+  //bounds.bumpVerticalPos(textHeight + 2 * conf.noteMargin)
 };
 
 /**
@@ -10110,7 +10111,7 @@ var draw = exports.draw = function draw(text, id) {
     var loopData = void 0;
     switch (msg.type) {
       case _sequenceDiagram.parser.yy.LINETYPE.NOTE:
-        bounds.bumpVerticalPos(conf.boxMargin);
+        //bounds.bumpVerticalPos(conf.boxMargin)
 
         startx = actors[msg.from].x;
         stopx = actors[msg.to].x;
@@ -10145,9 +10146,8 @@ var draw = exports.draw = function draw(text, id) {
         loopData = bounds.endLoop();
         inLoop = false;
 
-        console.log(loopData);
         _svgDraw2.default.drawLoop(diagram, loopData, 'COAP State', conf);
-        bounds.bumpVerticalPos(conf.boxMargin);
+        bounds.bumpVerticalPos(conf.boxMargin + 10);
         break;
       case _sequenceDiagram.parser.yy.LINETYPE.OPT_START:
         bounds.bumpVerticalPos(conf.boxMargin);
