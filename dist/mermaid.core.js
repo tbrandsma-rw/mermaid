@@ -9166,10 +9166,10 @@ var render = function render(id, txt, cb, container) {
     _logger.logger.warn('CB = undefined!');
   }
 
-  //const node = d3.select('#d' + id).node()
-  //if (node !== null && typeof node.remove === 'function') {
-  //  d3.select('#d' + id).node().remove()
-  //}
+  var node = _d2.default.select('#d' + id).node();
+  if (node !== null && typeof node.remove === 'function') {
+    _d2.default.select('#d' + id).node().remove();
+  }
 
   _logger.logger.debug(svgCode);
   return svgCode;

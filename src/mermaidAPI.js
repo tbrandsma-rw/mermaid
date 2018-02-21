@@ -491,10 +491,10 @@ svg {
     logger.warn('CB = undefined!')
   }
 
-  //const node = d3.select('#d' + id).node()
-  //if (node !== null && typeof node.remove === 'function') {
-  //  d3.select('#d' + id).node().remove()
-  //}
+  const node = d3.select('#d' + id).node()
+  if (node !== null && typeof node.remove === 'function') {
+    d3.select('#d' + id).node().remove()
+  }
 
   logger.debug(svgCode)
   return svgCode
