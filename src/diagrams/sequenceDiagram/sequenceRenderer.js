@@ -28,6 +28,8 @@ const conf = {
   // Prolongs the edge of the diagram downwards
   bottomMarginAdj: 1,
 
+  diagramHeight: 1000,
+
   // width of activation box
   activationWidth: 10,
 
@@ -277,7 +279,7 @@ const drawMessage = function (elem, startx, stopx, verticalPos, msg) {
   }
 }
 
-export const drawActors = function (diagram, actors, actorKeys, verticalPos) {
+export const drawActors = function (actorDiagram, diagram, actors, actorKeys, verticalPos) {
   // Draw the actors
   for (let i = 0; i < actorKeys.length; i++) {
     const key = actorKeys[i]
@@ -289,7 +291,7 @@ export const drawActors = function (diagram, actors, actorKeys, verticalPos) {
     actors[key].height = conf.diagramMarginY
 
     // Draw the box with the attached line
-    svgDraw.drawActor(diagram, actors[key].x, verticalPos, actors[key].description, conf)
+    svgDraw.drawActor(actorDiagram, diagram, actors[key].x, verticalPos, actors[key].description, conf)
     bounds.insert(actors[key].x, verticalPos, actors[key].x + conf.width, conf.height)
   }
 
@@ -331,7 +333,8 @@ export const draw = function (text, id) {
   parser.parse(text + '\n')
 
   bounds.init()
-  const diagram = d3.select('#' + id)
+  const actorDiagram = d3.select('#' + id + '-actors')
+  const diagram = d3.select('#' + id + '-events')
 
   let startx
   let stopx
@@ -342,11 +345,11 @@ export const draw = function (text, id) {
   const actorKeys = parser.yy.getActorKeys()
   const messages = parser.yy.getMessages()
   const title = parser.yy.getTitle()
-  drawActors(diagram, actors, actorKeys, 0)
+  drawActors(actorDiagram, diagram, actors, actorKeys, 0)
 
   // The arrow head definition is attached to the svg once
-  svgDraw.insertArrowHead(diagram)
-  svgDraw.insertArrowCrossHead(diagram)
+  svgDraw.insertArrowHead(actorDiagram)
+  svgDraw.insertArrowCrossHead(actorDiagram)
 
   function activeEnd (msg, verticalPos) {
     const activationData = bounds.endActivation(msg)
@@ -354,7 +357,7 @@ export const draw = function (text, id) {
       activationData.starty = verticalPos - 6
       verticalPos += 12
     }
-    svgDraw.drawActivation(diagram, activationData, verticalPos, conf)
+    svgDraw.drawActivation(actorDiagram, activationData, verticalPos, conf)
 
     bounds.insert(activationData.startx, verticalPos - 10, activationData.stopx, verticalPos)
   }
@@ -474,19 +477,20 @@ export const draw = function (text, id) {
   if (conf.mirrorActors) {
     // Draw actors below diagram
     bounds.bumpVerticalPos(conf.boxMargin * 2)
-    drawActors(diagram, actors, actorKeys, bounds.getVerticalPos())
+    drawActors(actorDiagram, actors, actorKeys, bounds.getVerticalPos())
   }
 
   const box = bounds.getBounds()
 
   // Adjust line height of actor lines now that the height of the diagram is known
+  // modified: February 16, 2018 adding the ability to to choose the height of the box
   logger.debug('For line height fix Querying: #' + id + ' .actor-line')
-  const actorLines = d3.selectAll('#' + id + ' .actor-line')
+  const actorLines = d3.selectAll('#' + id + '-events' + ' .actor-line')
   actorLines.attr('y2', box.stopy)
-
   let height = box.stopy - box.starty + 2 * conf.diagramMarginY
+
   if (conf.mirrorActors) {
-    height = height - conf.boxMargin + conf.bottomMarginAdj
+      height = height - conf.boxMargin + conf.bottomMarginAdj
   }
 
   const width = (box.stopx - box.startx) + (2 * conf.diagramMarginX)
@@ -499,15 +503,23 @@ export const draw = function (text, id) {
   }
 
   if (conf.useMaxWidth) {
-    diagram.attr('height', '100%')
     diagram.attr('width', '100%')
-    diagram.attr('style', 'max-width:' + (width) + 'px;')
+    diagram.attr('style', 'max-width:' + (width) + 'px;position:relative;top:0;')
+    actorDiagram.attr('width', '100%')
+    actorDiagram.attr('style', 'max-width:' + (width) + 'px;position:sticky;top:0;z-index: 5;')
   } else {
-    diagram.attr('height', height)
     diagram.attr('width', width)
+    diagram.attr('style', 'position:relative;top:0;')
+    //actorDiagram.attr('height', height)
+    actorDiagram.attr('width', width)
+    actorDiagram.attr('style', 'position:sticky;top:0;z-index: 5;')
   }
   const extraVertForTitle = title ? 40 : 0
+  const diagramDiv = d3.select('#d' + id)
+  diagramDiv.attr('style', 'width:100%;')
+  actorDiagram.attr('viewBox', (box.startx - conf.diagramMarginX) + ' -' + (conf.diagramMarginY + extraVertForTitle) + ' ' + width + ' ' + (conf.height + conf.diagramMarginY + extraVertForTitle))
   diagram.attr('viewBox', (box.startx - conf.diagramMarginX) + ' -' + (conf.diagramMarginY + extraVertForTitle) + ' ' + width + ' ' + (height + extraVertForTitle))
+
 }
 
 export default {

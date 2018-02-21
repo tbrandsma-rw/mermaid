@@ -165,7 +165,9 @@ const config = {
      * **useMaxWidth** - when this flag is set the height and width is set to 100% and is then scaling with the
      * available space if not the absolute space required is used
      */
-    useMaxWidth: true
+    useMaxWidth: true,
+
+    graphHeight: 1000
   },
 
   /** ### gantt
@@ -370,13 +372,27 @@ const render = function (id, txt, cb, container) {
   if (typeof container !== 'undefined') {
     container.innerHTML = ''
 
-    d3.select(container).append('div')
-      .attr('id', 'd' + id)
-      .append('svg')
-      .attr('id', id)
-      .attr('width', '100%')
-      .attr('xmlns', 'http://www.w3.org/2000/svg')
-      .append('g')
+      d3.select(container).append('div')
+        .attr('id', 'd' + id)
+        .attr('style', 'width:100%; height:1000;z-index:5;overflow-y:auto;')
+        .append('div')
+        .attr('id', 'd' + id + '-actors')
+        .attr('style', 'position:fixed;top:relative;width:100%;z-index:2;')
+        .append('svg')
+        .attr('id', id + '-actors')
+        .attr('width', '100%')
+        .attr('xmlns', 'http://www.w3.org/2000/svg')
+        .append('g')
+
+      d3.select('#d' + id).append('div')
+        .attr('id', 'd' + id + "-events")
+        .attr('sytle', 'width:100%;z-index:1;')
+        .append('svg')
+        .attr('id', id + "-events")
+        .attr('width', '100%')
+        .attr('xmlns', 'http://www.w3.org/2000/svg')
+        .append('g')
+
   } else {
     const element = document.querySelector('#' + 'd' + id)
     if (element) {
@@ -386,8 +402,16 @@ const render = function (id, txt, cb, container) {
     d3.select('body').append('div')
       .attr('id', 'd' + id)
       .append('svg')
-      .attr('id', id)
+      .attr('id', id + "-actors")
       .attr('width', '100%')
+      //.attr('style', 'position:absolute;margin: 0 auto;width:100%;')
+      .attr('xmlns', 'http://www.w3.org/2000/svg')
+      .append('g')
+
+    d3.select('#d' + id).append('svg')
+      .attr('id', id + '-events')
+      .attr('width', '100%')
+      //.attr('style', 'position:sticky;top:-1;margin:0;z-index: 5;height:' + config.graphHeight + ';')
       .attr('xmlns', 'http://www.w3.org/2000/svg')
       .append('g')
   }
@@ -435,9 +459,9 @@ const render = function (id, txt, cb, container) {
   }
 
   // insert inline style into svg
-  const svg = element.firstChild
+  //const svg = element.firstChild
   const s = document.createElement('style')
-  const cs = window.getComputedStyle(svg)
+  const cs = window.getComputedStyle(element)
   s.innerHTML = `
   ${themes[config.theme] || defaultTheme}
 svg {
@@ -445,7 +469,7 @@ svg {
   font: ${cs.font};
 }
   `
-  svg.insertBefore(s, svg.firstChild)
+  element.insertBefore(s, element.firstChild)
 
   d3.select('#d' + id).selectAll('foreignobject div').attr('xmlns', 'http://www.w3.org/1999/xhtml')
 
@@ -467,11 +491,12 @@ svg {
     logger.warn('CB = undefined!')
   }
 
-  const node = d3.select('#d' + id).node()
-  if (node !== null && typeof node.remove === 'function') {
-    d3.select('#d' + id).node().remove()
-  }
+  //const node = d3.select('#d' + id).node()
+  //if (node !== null && typeof node.remove === 'function') {
+  //  d3.select('#d' + id).node().remove()
+  //}
 
+  logger.debug(svgCode)
   return svgCode
 }
 

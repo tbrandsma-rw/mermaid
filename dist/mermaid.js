@@ -58043,7 +58043,9 @@ var themes = {
      * **useMaxWidth** - when this flag is set the height and width is set to 100% and is then scaling with the
      * available space if not the absolute space required is used
      */
-    useMaxWidth: true
+    useMaxWidth: true,
+
+    graphHeight: 1000
   },
 
   /** ### gantt
@@ -58247,14 +58249,22 @@ var render = function render(id, txt, cb, container) {
   if (typeof container !== 'undefined') {
     container.innerHTML = '';
 
-    _d2.default.select(container).append('div').attr('id', 'd' + id).append('svg').attr('id', id).attr('width', '100%').attr('xmlns', 'http://www.w3.org/2000/svg').append('g');
+    _d2.default.select(container).append('div').attr('id', 'd' + id).attr('style', 'width:100%; height:1000;z-index:5;overflow-y:auto;').append('div').attr('id', 'd' + id + '-actors').attr('style', 'position:fixed;top:relative;width:100%;z-index:2;').append('svg').attr('id', id + '-actors').attr('width', '100%').attr('xmlns', 'http://www.w3.org/2000/svg').append('g');
+
+    _d2.default.select('#d' + id).append('div').attr('id', 'd' + id + "-events").attr('sytle', 'width:100%;z-index:1;').append('svg').attr('id', id + "-events").attr('width', '100%').attr('xmlns', 'http://www.w3.org/2000/svg').append('g');
   } else {
     var _element = document.querySelector('#' + 'd' + id);
     if (_element) {
       _element.innerHTML = '';
     }
 
-    _d2.default.select('body').append('div').attr('id', 'd' + id).append('svg').attr('id', id).attr('width', '100%').attr('xmlns', 'http://www.w3.org/2000/svg').append('g');
+    _d2.default.select('body').append('div').attr('id', 'd' + id).append('svg').attr('id', id + "-actors").attr('width', '100%')
+    //.attr('style', 'position:absolute;margin: 0 auto;width:100%;')
+    .attr('xmlns', 'http://www.w3.org/2000/svg').append('g');
+
+    _d2.default.select('#d' + id).append('svg').attr('id', id + '-events').attr('width', '100%')
+    //.attr('style', 'position:sticky;top:-1;margin:0;z-index: 5;height:' + config.graphHeight + ';')
+    .attr('xmlns', 'http://www.w3.org/2000/svg').append('g');
   }
 
   window.txt = txt;
@@ -58300,11 +58310,11 @@ var render = function render(id, txt, cb, container) {
   }
 
   // insert inline style into svg
-  var svg = element.firstChild;
+  //const svg = element.firstChild
   var s = document.createElement('style');
-  var cs = window.getComputedStyle(svg);
+  var cs = window.getComputedStyle(element);
   s.innerHTML = '\n  ' + (themes[config.theme] || _mermaid4.default) + '\nsvg {\n  color: ' + cs.color + ';\n  font: ' + cs.font + ';\n}\n  ';
-  svg.insertBefore(s, svg.firstChild);
+  element.insertBefore(s, element.firstChild);
 
   _d2.default.select('#d' + id).selectAll('foreignobject div').attr('xmlns', 'http://www.w3.org/1999/xhtml');
 
@@ -58326,11 +58336,12 @@ var render = function render(id, txt, cb, container) {
     _logger.logger.warn('CB = undefined!');
   }
 
-  var node = _d2.default.select('#d' + id).node();
-  if (node !== null && typeof node.remove === 'function') {
-    _d2.default.select('#d' + id).node().remove();
-  }
+  //const node = d3.select('#d' + id).node()
+  //if (node !== null && typeof node.remove === 'function') {
+  //  d3.select('#d' + id).node().remove()
+  //}
 
+  _logger.logger.debug(svgCode);
   return svgCode;
 };
 
@@ -59533,6 +59544,8 @@ var conf = {
   // Prolongs the edge of the diagram downwards
   bottomMarginAdj: 1,
 
+  diagramHeight: 1000,
+
   // width of activation box
   activationWidth: 10,
 
@@ -59777,7 +59790,7 @@ var drawMessage = function drawMessage(elem, startx, stopx, verticalPos, msg) {
   }
 };
 
-var drawActors = exports.drawActors = function drawActors(diagram, actors, actorKeys, verticalPos) {
+var drawActors = exports.drawActors = function drawActors(actorDiagram, diagram, actors, actorKeys, verticalPos) {
   // Draw the actors
   for (var i = 0; i < actorKeys.length; i++) {
     var key = actorKeys[i];
@@ -59789,7 +59802,7 @@ var drawActors = exports.drawActors = function drawActors(diagram, actors, actor
     actors[key].height = conf.diagramMarginY;
 
     // Draw the box with the attached line
-    _svgDraw2.default.drawActor(diagram, actors[key].x, verticalPos, actors[key].description, conf);
+    _svgDraw2.default.drawActor(actorDiagram, diagram, actors[key].x, verticalPos, actors[key].description, conf);
     bounds.insert(actors[key].x, verticalPos, actors[key].x + conf.width, conf.height);
   }
 
@@ -59835,7 +59848,8 @@ var draw = exports.draw = function draw(text, id) {
   _sequenceDiagram.parser.parse(text + '\n');
 
   bounds.init();
-  var diagram = _d2.default.select('#' + id);
+  var actorDiagram = _d2.default.select('#' + id + '-actors');
+  var diagram = _d2.default.select('#' + id + '-events');
 
   var startx = void 0;
   var stopx = void 0;
@@ -59846,11 +59860,11 @@ var draw = exports.draw = function draw(text, id) {
   var actorKeys = _sequenceDiagram.parser.yy.getActorKeys();
   var messages = _sequenceDiagram.parser.yy.getMessages();
   var title = _sequenceDiagram.parser.yy.getTitle();
-  drawActors(diagram, actors, actorKeys, 0);
+  drawActors(actorDiagram, diagram, actors, actorKeys, 0);
 
   // The arrow head definition is attached to the svg once
-  _svgDraw2.default.insertArrowHead(diagram);
-  _svgDraw2.default.insertArrowCrossHead(diagram);
+  _svgDraw2.default.insertArrowHead(actorDiagram);
+  _svgDraw2.default.insertArrowCrossHead(actorDiagram);
 
   function activeEnd(msg, verticalPos) {
     var activationData = bounds.endActivation(msg);
@@ -59858,7 +59872,7 @@ var draw = exports.draw = function draw(text, id) {
       activationData.starty = verticalPos - 6;
       verticalPos += 12;
     }
-    _svgDraw2.default.drawActivation(diagram, activationData, verticalPos, conf);
+    _svgDraw2.default.drawActivation(actorDiagram, activationData, verticalPos, conf);
 
     bounds.insert(activationData.startx, verticalPos - 10, activationData.stopx, verticalPos);
   }
@@ -59977,17 +59991,18 @@ var draw = exports.draw = function draw(text, id) {
   if (conf.mirrorActors) {
     // Draw actors below diagram
     bounds.bumpVerticalPos(conf.boxMargin * 2);
-    drawActors(diagram, actors, actorKeys, bounds.getVerticalPos());
+    drawActors(actorDiagram, actors, actorKeys, bounds.getVerticalPos());
   }
 
   var box = bounds.getBounds();
 
   // Adjust line height of actor lines now that the height of the diagram is known
+  // modified: February 16, 2018 adding the ability to to choose the height of the box
   _logger.logger.debug('For line height fix Querying: #' + id + ' .actor-line');
-  var actorLines = _d2.default.selectAll('#' + id + ' .actor-line');
+  var actorLines = _d2.default.selectAll('#' + id + '-events' + ' .actor-line');
   actorLines.attr('y2', box.stopy);
-
   var height = box.stopy - box.starty + 2 * conf.diagramMarginY;
+
   if (conf.mirrorActors) {
     height = height - conf.boxMargin + conf.bottomMarginAdj;
   }
@@ -59999,14 +60014,21 @@ var draw = exports.draw = function draw(text, id) {
   }
 
   if (conf.useMaxWidth) {
-    diagram.attr('height', '100%');
     diagram.attr('width', '100%');
-    diagram.attr('style', 'max-width:' + width + 'px;');
+    diagram.attr('style', 'max-width:' + width + 'px;position:relative;top:0;');
+    actorDiagram.attr('width', '100%');
+    actorDiagram.attr('style', 'max-width:' + width + 'px;position:sticky;top:0;z-index: 5;');
   } else {
-    diagram.attr('height', height);
     diagram.attr('width', width);
+    diagram.attr('style', 'position:relative;top:0;');
+    //actorDiagram.attr('height', height)
+    actorDiagram.attr('width', width);
+    actorDiagram.attr('style', 'position:sticky;top:0;z-index: 5;');
   }
   var extraVertForTitle = title ? 40 : 0;
+  var diagramDiv = _d2.default.select('#d' + id);
+  diagramDiv.attr('style', 'width:100%;');
+  actorDiagram.attr('viewBox', box.startx - conf.diagramMarginX + ' -' + (conf.diagramMarginY + extraVertForTitle) + ' ' + width + ' ' + (conf.height + conf.diagramMarginY + extraVertForTitle));
   diagram.attr('viewBox', box.startx - conf.diagramMarginX + ' -' + (conf.diagramMarginY + extraVertForTitle) + ' ' + width + ' ' + (height + extraVertForTitle));
 };
 
@@ -60093,14 +60115,15 @@ var actorCnt = -1;
  * @param pos The position if the actor in the liost of actors
  * @param description The text in the box
  */
-var drawActor = exports.drawActor = function drawActor(elem, left, verticalPos, description, conf) {
+var drawActor = exports.drawActor = function drawActor(elem, diag, left, verticalPos, description, conf) {
   var center = left + conf.width / 2;
-  var g = elem.append('g');
+  var g = diag.append('g');
   if (verticalPos === 0) {
     actorCnt++;
     g.append('line').attr('id', 'actor' + actorCnt).attr('x1', center).attr('y1', 5).attr('x2', center).attr('y2', 2000).attr('class', 'actor-line').attr('stroke-width', '0.5px').attr('stroke', '#999');
   }
 
+  var g2 = elem.append('g');
   var rect = getNoteRect();
   rect.x = left;
   rect.y = verticalPos;
@@ -60110,9 +60133,9 @@ var drawActor = exports.drawActor = function drawActor(elem, left, verticalPos, 
   rect.class = 'actor';
   rect.rx = 3;
   rect.ry = 3;
-  drawRect(g, rect);
+  drawRect(g2, rect);
 
-  _drawTextCandidateFunc(conf)(description, g, rect.x, rect.y, rect.width, rect.height, { 'class': 'actor' });
+  _drawTextCandidateFunc(conf)(description, g2, rect.x, rect.y, rect.width, rect.height, { 'class': 'actor' });
 };
 
 var anchorElement = exports.anchorElement = function anchorElement(elem) {

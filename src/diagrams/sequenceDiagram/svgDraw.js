@@ -68,9 +68,9 @@ let actorCnt = -1
  * @param pos The position if the actor in the liost of actors
  * @param description The text in the box
  */
-export const drawActor = function (elem, left, verticalPos, description, conf) {
+export const drawActor = function (elem, diag, left, verticalPos, description, conf) {
   const center = left + (conf.width / 2)
-  const g = elem.append('g')
+  const g = diag.append('g')
   if (verticalPos === 0) {
     actorCnt++
     g.append('line')
@@ -84,6 +84,7 @@ export const drawActor = function (elem, left, verticalPos, description, conf) {
       .attr('stroke', '#999')
   }
 
+  const g2 = elem.append('g')
   const rect = getNoteRect()
   rect.x = left
   rect.y = verticalPos
@@ -93,9 +94,9 @@ export const drawActor = function (elem, left, verticalPos, description, conf) {
   rect.class = 'actor'
   rect.rx = 3
   rect.ry = 3
-  drawRect(g, rect)
+  drawRect(g2, rect)
 
-  _drawTextCandidateFunc(conf)(description, g,
+  _drawTextCandidateFunc(conf)(description, g2,
     rect.x, rect.y, rect.width, rect.height, { 'class': 'actor' })
 }
 
