@@ -60015,20 +60015,20 @@ var draw = exports.draw = function draw(text, id) {
 
   if (conf.useMaxWidth) {
     diagram.attr('width', '100%');
-    diagram.attr('style', 'max-width:' + width + 'px;position:relative;top:0;');
+    diagram.attr('style', 'max-width:' + width + 'px;position:relative;top:0;float:left;');
     actorDiagram.attr('width', '100%');
-    actorDiagram.attr('style', 'max-width:' + width + 'px;position:sticky;top:0;z-index: 5;');
+    actorDiagram.attr('style', 'max-width:' + width + 'px;position:sticky;top:0;z-index: 5;float:left;');
   } else {
     diagram.attr('width', width);
-    diagram.attr('style', 'position:relative;top:0;');
+    diagram.attr('style', 'position:relative;top:0;float:left;');
     //actorDiagram.attr('height', height)
     actorDiagram.attr('width', width);
-    actorDiagram.attr('style', 'position:sticky;top:0;z-index: 5;');
+    actorDiagram.attr('style', 'position:sticky;top:0;z-index: 5;float:left;');
   }
   var extraVertForTitle = title ? 40 : 0;
   var diagramDiv = _d2.default.select('#d' + id);
   diagramDiv.attr('style', 'width:100%;');
-  actorDiagram.attr('viewBox', box.startx - conf.diagramMarginX + ' -' + (conf.diagramMarginY + extraVertForTitle) + ' ' + width + ' ' + (conf.height + conf.diagramMarginY + extraVertForTitle));
+  actorDiagram.attr('viewBox', box.startx - conf.diagramMarginX + ' -' + (conf.diagramMarginY + extraVertForTitle) + ' ' + width + ' ' + (conf.height + conf.actorMargin + extraVertForTitle));
   diagram.attr('viewBox', box.startx - conf.diagramMarginX + ' -' + (conf.diagramMarginY + extraVertForTitle) + ' ' + width + ' ' + (height + extraVertForTitle));
 };
 
