@@ -7,6 +7,9 @@
   <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
 </head>
 <body>
+  <div id="output">
+
+  </div>
   <div id="content">
 sequenceDiagram
     participant 0 as coap:4d95eedf@ZjEs4GmsZoJfiunHZvjP8gisw.nocell.io
@@ -261,8 +264,9 @@ sequenceDiagram
     }
   });
   mermaid.mermaidAPI.render("test", document.getElementById("content").textContent, svg => {
+    document.getElementById("output") = svg;
     console.log(svg);
-  })
+  });
   </script>
   <script>
     function testClick(nodeId) {

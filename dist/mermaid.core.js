@@ -10154,6 +10154,7 @@ var draw = exports.draw = function draw(text, id) {
         bounds.newLoop(msg.message);
         bounds.bumpVerticalPos(conf.boxMargin + conf.boxTextMargin);
         bounds.bumpVerticalPos(15);
+        bounds.bumpVerticalPos(conf.boxMargin + 50);
         inLoop = true;
         break;
       case _sequenceDiagram.parser.yy.LINETYPE.LOOP_END:
@@ -10161,7 +10162,7 @@ var draw = exports.draw = function draw(text, id) {
         inLoop = false;
 
         _svgDraw2.default.drawLoop(diagram, loopData, 'COAP State', conf);
-        bounds.bumpVerticalPos(conf.boxMargin + 10);
+        bounds.bumpVerticalPos(conf.boxMargin + 50);
         break;
       case _sequenceDiagram.parser.yy.LINETYPE.OPT_START:
         bounds.bumpVerticalPos(conf.boxMargin);
@@ -10409,10 +10410,10 @@ var drawLoop = exports.drawLoop = function drawLoop(elem, bounds, labelText, con
   var drawLoopLine = function drawLoopLine(startx, starty, stopx, stopy) {
     return g.append('line').attr('x1', startx).attr('y1', starty).attr('x2', stopx).attr('y2', stopy).attr('class', 'loopLine');
   };
-  drawLoopLine(bounds.startx, bounds.starty, bounds.stopx, bounds.starty);
-  drawLoopLine(bounds.stopx, bounds.starty, bounds.stopx, bounds.stopy + 10);
+  drawLoopLine(bounds.startx, bounds.starty + 50, bounds.stopx, bounds.starty + 50);
+  drawLoopLine(bounds.stopx, bounds.starty + 50, bounds.stopx, bounds.stopy + 10);
   drawLoopLine(bounds.startx, bounds.stopy + 10, bounds.stopx, bounds.stopy + 10);
-  drawLoopLine(bounds.startx, bounds.starty, bounds.startx, bounds.stopy + 10);
+  drawLoopLine(bounds.startx, bounds.starty + 50, bounds.startx, bounds.stopy + 10);
   if (typeof bounds.sections !== 'undefined') {
     bounds.sections.forEach(function (item) {
       drawLoopLine(bounds.startx, item, bounds.stopx, item).style('stroke-dasharray', '3, 3');
@@ -10422,7 +10423,7 @@ var drawLoop = exports.drawLoop = function drawLoop(elem, bounds, labelText, con
   var txt = getTextObj();
   txt.text = labelText;
   txt.x = bounds.startx;
-  txt.y = bounds.starty;
+  txt.y = bounds.starty + 50;
   txt.labelMargin = 1.5 * 10; // This is the small box that says "loop"
   txt.class = 'labelText'; // Its size & position are fixed.
 
@@ -10431,7 +10432,7 @@ var drawLoop = exports.drawLoop = function drawLoop(elem, bounds, labelText, con
   txt = getTextObj();
   txt.text = '' + bounds.title + '';
   txt.x = bounds.startx + (bounds.stopx - bounds.startx) / 2;
-  txt.y = bounds.starty + 1.5 * conf.boxMargin;
+  txt.y = bounds.starty + 50 + 1.5 * conf.boxMargin;
   txt.anchor = 'middle';
   txt.class = 'loopText';
 

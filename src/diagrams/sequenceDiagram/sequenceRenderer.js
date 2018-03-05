@@ -400,6 +400,7 @@ export const draw = function (text, id) {
         bounds.newLoop(msg.message)
         bounds.bumpVerticalPos(conf.boxMargin + conf.boxTextMargin)
         bounds.bumpVerticalPos(15)
+        bounds.bumpVerticalPos(conf.boxMargin + 50)
         inLoop = true
         break
       case parser.yy.LINETYPE.LOOP_END:
@@ -407,7 +408,7 @@ export const draw = function (text, id) {
         inLoop = false
 
         svgDraw.drawLoop(diagram, loopData, 'COAP State', conf)
-        bounds.bumpVerticalPos(conf.boxMargin + 10)
+        bounds.bumpVerticalPos(conf.boxMargin + 50)
         break
       case parser.yy.LINETYPE.OPT_START:
         bounds.bumpVerticalPos(conf.boxMargin)

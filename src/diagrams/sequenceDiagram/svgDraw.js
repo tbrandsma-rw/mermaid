@@ -136,10 +136,10 @@ export const drawLoop = function (elem, bounds, labelText, conf) {
       .attr('y2', stopy)
       .attr('class', 'loopLine')
   }
-  drawLoopLine(bounds.startx, bounds.starty, bounds.stopx, bounds.starty)
-  drawLoopLine(bounds.stopx, bounds.starty, bounds.stopx, bounds.stopy + 10)
+  drawLoopLine(bounds.startx, bounds.starty + 50, bounds.stopx, bounds.starty + 50)
+  drawLoopLine(bounds.stopx, bounds.starty + 50, bounds.stopx, bounds.stopy + 10)
   drawLoopLine(bounds.startx, bounds.stopy + 10, bounds.stopx, bounds.stopy + 10)
-  drawLoopLine(bounds.startx, bounds.starty, bounds.startx, bounds.stopy + 10)
+  drawLoopLine(bounds.startx, bounds.starty + 50, bounds.startx, bounds.stopy + 10)
   if (typeof bounds.sections !== 'undefined') {
     bounds.sections.forEach(function (item) {
       drawLoopLine(bounds.startx, item, bounds.stopx, item).style('stroke-dasharray', '3, 3')
@@ -149,7 +149,7 @@ export const drawLoop = function (elem, bounds, labelText, conf) {
   let txt = getTextObj()
   txt.text = labelText
   txt.x = bounds.startx
-  txt.y = bounds.starty
+  txt.y = bounds.starty + 50
   txt.labelMargin = 1.5 * 10 // This is the small box that says "loop"
   txt.class = 'labelText'    // Its size & position are fixed.
 
@@ -158,7 +158,7 @@ export const drawLoop = function (elem, bounds, labelText, conf) {
   txt = getTextObj()
   txt.text = '' + bounds.title + ''
   txt.x = bounds.startx + (bounds.stopx - bounds.startx) / 2
-  txt.y = bounds.starty + 1.5 * conf.boxMargin
+  txt.y = bounds.starty + 50 + 1.5 * conf.boxMargin
   txt.anchor = 'middle'
   txt.class = 'loopText'
 
