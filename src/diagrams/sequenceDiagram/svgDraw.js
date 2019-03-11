@@ -93,6 +93,7 @@ export const drawActor = function (elem, diag, left, verticalPos, description, c
   rect.height = conf.height
   rect.rx = 3
   rect.ry = 3
+  console.log("description = " + description);
   if (description === "core") {
     rect.class = 'bbsActor'
     description = 'Bandwidth'
