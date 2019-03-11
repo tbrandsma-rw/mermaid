@@ -10371,6 +10371,7 @@ var drawActor = exports.drawActor = function drawActor(elem, diag, left, vertica
   rect.fill = '#eaeaea';
   rect.width = conf.width;
   rect.height = conf.height;
+  rect.class = 'actor';
   rect.rx = 3;
   rect.ry = 3;
   if (description === "core") {

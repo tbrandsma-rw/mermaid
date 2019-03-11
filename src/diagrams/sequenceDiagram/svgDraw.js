@@ -91,6 +91,7 @@ export const drawActor = function (elem, diag, left, verticalPos, description, c
   rect.fill = '#eaeaea'
   rect.width = conf.width
   rect.height = conf.height
+  rect.class = 'actor'
   rect.rx = 3
   rect.ry = 3
   if (description === "core") {
