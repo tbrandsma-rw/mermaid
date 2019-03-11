@@ -10376,15 +10376,9 @@ var drawActor = exports.drawActor = function drawActor(elem, diag, left, vertica
   if (description === "core") {
     rect.class = 'bbsActor';
     description = 'Bandwidth';
-    drawRect(g2, rect);
-
-    _drawTextCandidateFunc(conf)(description, g2, rect.x, rect.y, rect.width, rect.height, { 'class': 'bbsActor' });
-  } else {
-    rect.class = 'actor';
-    drawRect(g2, rect);
-
-    _drawTextCandidateFunc(conf)(description, g2, rect.x, rect.y, rect.width, rect.height, { 'class': 'actor' });
   }
+  drawRect(g2, rect);
+  _drawTextCandidateFunc(conf)(description, g2, rect.x, rect.y, rect.width, rect.height, { 'class': 'actor' });
 };
 
 var anchorElement = exports.anchorElement = function anchorElement(elem) {
