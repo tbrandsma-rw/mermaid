@@ -91,13 +91,22 @@ export const drawActor = function (elem, diag, left, verticalPos, description, c
   rect.fill = '#eaeaea'
   rect.width = conf.width
   rect.height = conf.height
-  rect.class = 'actor'
   rect.rx = 3
   rect.ry = 3
-  drawRect(g2, rect)
+  if (description === "core") {
+    rect.class = 'bbsActor'
+    description = 'Bandwidth'
+    drawRect(g2, rect)
 
-  _drawTextCandidateFunc(conf)(description, g2,
-    rect.x, rect.y, rect.width, rect.height, { 'class': 'actor' })
+    _drawTextCandidateFunc(conf)(description, g2,
+      rect.x, rect.y, rect.width, rect.height, { 'class': 'bbsActor' })
+  } else {
+    rect.class = 'actor'
+    drawRect(g2, rect)
+
+    _drawTextCandidateFunc(conf)(description, g2,
+      rect.x, rect.y, rect.width, rect.height, { 'class': 'actor' })
+  }
 }
 
 export const anchorElement = function (elem) {
